@@ -1,0 +1,51 @@
+-- Simple Roblox Jump Scare (LocalScript)
+
+--// SETTINGS
+local IMAGE_ID = "rbxassetid://104651872310119"
+local SOUND_ID = "rbxassetid://128195467198021"
+
+local JUMPSCARE_TIME = 3 -- seconds
+
+--// SERVICES
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+--// GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "JumpScareGui"
+gui.ResetOnSpawn = false
+gui.Parent = playerGui
+
+local image = Instance.new("ImageLabel")
+image.Size = UDim2.new(1,0,1,0)
+image.Position = UDim2.new(0,0,0,0)
+image.BackgroundTransparency = 1
+image.Image = IMAGE_ID
+image.Parent = gui
+
+--// SOUND
+local sound = Instance.new("Sound")
+sound.SoundId = SOUND_ID
+sound.Volume = 10
+sound.Parent = gui
+
+--// EFFECT
+image.Visible = true
+sound:Play()
+
+-- Optional flashing
+task.spawn(function()
+	for i = 1, 10 do
+		image.Visible = not image.Visible
+		task.wait(0.08)
+	end
+	
+	image.Visible = true
+end)
+
+-- Remove after time
+task.wait(JUMPSCARE_TIME)
+
+gui:Destroy()
